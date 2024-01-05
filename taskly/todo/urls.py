@@ -45,7 +45,7 @@ urlpatterns = [
     path('delete-task/<str:pk>/', views.DeleteTask, name='my-deletetask'),
     
 
-    # -----------------------Signout a user ------------------------- #
+    # -----------------------Signout a user ------------------------ #
     # --------------------------------------------------------------- #
   
     path('signout', views.Signout, name='my-signout'),
