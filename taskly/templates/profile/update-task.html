@@ -1,0 +1,54 @@
+{% load static%}
+
+{% include 'profile/base.html'%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/darkly/bootstrap.min.css">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+       
+        <title>Task | Update-Task</title>
+</head>
+<br>
+<h3 class="text-center">Update  Task</h3>
+<hr>
+<body>
+    
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>message:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-lable="close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {%endfor %}
+   
+    
+<div class="container bg-white shadow-md p-lg-5 form-layout text-black ">
+    
+    <br>
+    <form action="" method="post" autocomplete="off">
+    {% csrf_token%}
+
+        {{form.as_p}}
+       
+        <button class="btn btn-outline-info me-2" type="Submit">Update</button>
+
+        <a class="btn btn-outline-primary me-2" type="button" href="{% url 'my-Viewtask'%}">Go Back</a>
+    </form>
+</div>
+    <script src="" > </script>
+</body>
+</html>
+
+
+
+    
+
+   

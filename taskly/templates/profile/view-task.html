@@ -1,0 +1,53 @@
+{% load static%}
+
+{% include 'profile/base.html'%}
+
+<html>
+    <head>
+
+        <meta charset="UTF-8">
+    
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/darkly/bootstrap.min.css">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+        <title>Task | View-Task</title>
+
+    </head>
+
+
+
+    <br> 
+    
+<div>
+        <h3 class="text-center">My Task</h3>
+        <hr>
+
+    {% for tsk in task %}
+        <div class="container bg-white shadow-md p-lg-5 form-layout text-black " style="margin-top:20px ;">
+            
+            {{tsk.title}}
+
+            <br> <br>
+
+            {{tsk.content }}
+
+            <br><br>
+
+
+            <a class="btn btn-outline-primary me-2" type="button" href="{% url 'my-updatetask' tsk.id  %}">Update Task</a>
+
+            <br><br>
+
+
+            <a class="btn btn-outline-danger me-2" type="button" href="{% url 'my-deletetask' tsk.id%}">Delete Task</a>
+            
+        </div>
+    {% endfor %}
+
+</div>
+
+
+</html>
