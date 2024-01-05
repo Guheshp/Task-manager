@@ -9,7 +9,7 @@ from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 
-from .forms import CreateTaskform
+from .forms import CreateTaskform, UpdateUserForm
 
 from . models import Task
 
@@ -94,6 +94,29 @@ def Signin(request):
 
     return render(request, 'signin.html')
 
+
+# - profilemanagement. - 
+@login_required(login_url='my-signin')
+def ProfileManagement(request):
+    if request.method == 'POST':
+        
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+
+        if user_form.is_valid():
+            user_form.save()
+            print("Form is valid. Redirecting to 'my-dashboard'")
+            return redirect('my-dashboard')
+        else:
+             print("Form is not valid. Errors:", user_form.errors)
+             print("Submitted data:", request.POST)
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+
+    context = {'user_form': user_form}
+    return render(request, 'profile/profile-management.html', context=context)
+
+
+
 # - signout. - 
 
 def Signout(request):
@@ -174,6 +197,7 @@ def DeleteTask(request, pk):
     
     return render(request, 'profile/delete-task.html')
     
+
 
 
 

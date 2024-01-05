@@ -29,16 +29,18 @@
                   </a>
                 </li>
               </ul>
-              <form class="d-flex"> 
+             
 
-                {% if user.is_authenticated %}
-               <h3> hello {{name}}</h3>
-               <h2>ur are successfully loged in </h2>
-               <a  href="{% url 'my-signout' %}"> sigout here</a> <br><br>
-                {%else%}
+              {% if user.is_authenticated %}
+               <h3> {{user.username}}</h3>
+               
+               <!-- <a  href="{% url 'my-signout' %}"> sigout here</a> <br><br> -->
+
+               <a class="btn btn-outline-primary" type="button" href="{% url 'my-dashboard' %}">Dashboard</a>
+                <!-- {%else%} -->
                   <a class="btn btn-outline-primary me-2" type="button" href="{% url 'my-signup' %}">Register</a>
                   <a class="btn btn-outline-primary" type="button" href="{% url 'my-signin' %}">Login</a>
-                  {%endif%}
+                  <!-- {%endif%} -->
 
                   
                 </form>

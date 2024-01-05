@@ -43,6 +43,11 @@ urlpatterns = [
     #---------------------------------------------------------------- #
 
     path('delete-task/<str:pk>/', views.DeleteTask, name='my-deletetask'),
+
+    #-----------------------Profile-management -------------------------- #
+    #---------------------------------------------------------------- #
+
+    path('profile-management', views.ProfileManagement, name='my-profilrmanagement'),
     
 
     # -----------------------Signout a user ------------------------ #
