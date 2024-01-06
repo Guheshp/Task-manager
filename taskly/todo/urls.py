@@ -47,7 +47,12 @@ urlpatterns = [
     #-----------------------Profile-management -------------------------- #
     #---------------------------------------------------------------- #
 
-    path('profile-management', views.ProfileManagement, name='my-profilrmanagement'),
+    path('profile-management', views.Profile_Management, name='my-profilemanagement'),
+
+    #----------------------- Delete-Profile -------------------------- #
+    #---------------------------------------------------------------- #
+
+    path('delete-account', views.DeleteAccount, name='my-deleteaccount'),
     
 
     # -----------------------Signout a user ------------------------ #

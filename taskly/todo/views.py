@@ -1,17 +1,19 @@
 from django.shortcuts import render, redirect
 from  django.http import HttpResponse
 
-from django.contrib.auth import authenticate,login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import auth
 
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 
-from .forms import CreateTaskform, UpdateUserForm
+from .forms import CreateTaskform,LoginForm,CreateUserForm, UpdateUserProfileForm
 
 from . models import Task
+
+from django.contrib.auth.models import User
 
 
 
@@ -37,90 +39,70 @@ def Profile(request):
 
 def Signup(request):
 
+    form = CreateUserForm()
+
     if request.method == 'POST':
 
-        username = request.POST['username']
-        email = request.POST['email']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
+        form = CreateUserForm(request.POST)
 
-        if User.objects.filter(username=username):
-            messages.error(request, 'username already exist please try another')
-            return redirect("my-signup")
+        if form.is_valid():
+            form.save()
 
-        if User.objects.filter(email=email):
-            messages.error(request, 'email is already exist please try another ')
-            return redirect("my-signup")
-        
-        # if len(username) >10:
-        #     messages.error(request, ' username must be under 10 charecters')
+            return redirect("my-signin")
+    
+    context = {'form' : form }
 
-        if not username.isalnum():
-            messages.error(request, 'username must be Alph-number')
-            return redirect("my-signup")
-
-        if password1 != password2:
-            messages.error(request, 'password not matching please try again')
-            return redirect("my-signup")
-        
-
-        myuser = User.objects.create_user(username, email, password1)
-
-        myuser.save()
-
-        messages.success(request, 'your account has been created successfully')
-
-        return redirect('my-signin')
-
-    return render(request, 'signup.html')
+    return render(request,'signup.html',context=context)
 
 # - signin. - 
 
 def Signin(request):
 
+    form = LoginForm()
+
     if request.method == 'POST':
-        username = request.POST['username'] 
-        password1 = request.POST['password1']
 
-        user = authenticate(username=username, password = password1)
+        form = LoginForm(request, data = request.POST)
 
-        if user is not None:
-            auth_login(request, user)
-            #name = user.username
-            #return render(request, 'index.html', {'name':name})
-            return redirect('my-dashboard')
-        else:
-            messages.error(request,'bad credentials')
+        if form.is_valid():
 
-    return render(request, 'signin.html')
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+
+                auth.login(request, user)
+
+                return redirect("my-dashboard")
+            
+    context = {'form': form}
+            
+    return render(request, 'signin.html', context=context) 
 
 
 # - profilemanagement. - 
-@login_required(login_url='my-signin')
-def ProfileManagement(request):
-    if request.method == 'POST':
-        
-        user_form = UpdateUserForm(request.POST, instance=request.user)
 
+@login_required(login_url='my-signin')
+def Profile_Management(request):
+    if request.method == 'POST':
+        user_form = UpdateUserProfileForm(request.POST, instance=request.user)
         if user_form.is_valid():
             user_form.save()
-            print("Form is valid. Redirecting to 'my-dashboard'")
-            return redirect('my-dashboard')
+            return redirect("my-dashboard")
         else:
-             print("Form is not valid. Errors:", user_form.errors)
-             print("Submitted data:", request.POST)
-    else:
-        user_form = UpdateUserForm(instance=request.user)
+            print("Form is not valid. Errors:", user_form.errors)
 
+    user_form = UpdateUserProfileForm(instance=request.user)
     context = {'user_form': user_form}
     return render(request, 'profile/profile-management.html', context=context)
-
-
+        
 
 # - signout. - 
 
 def Signout(request):
-    auth_logout(request)
+    auth.logout(request)
     messages.success(request, 'logged out successfully ')
     
     return redirect("")
@@ -155,9 +137,9 @@ def ViewTask(request):
     current_user = request.user.id
 
     task = Task.objects.all().filter(user=current_user)
-
+    
     context = {'task':task}
-
+    
 
     return render(request, 'profile/view-task.html',context)
 
@@ -196,9 +178,21 @@ def DeleteTask(request, pk):
         return redirect('my-Viewtask')
     
     return render(request, 'profile/delete-task.html')
+
+
+# - DeleteTask. -
+
+def DeleteAccount(request):
+
+    if request.method == "POST":
+
+        delete_user = User.objects.get(username=request.user)
+
+        delete_user.delete()
+
+        return redirect("")
     
-
-
+    return render(request, 'profile/delete-profile.html')
 
 
     

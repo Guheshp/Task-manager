@@ -1,6 +1,6 @@
 {% load static%}
 
-{% load crispy_forms_tags %}
+{% include 'profile/base.html'%}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,9 +13,8 @@
 
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
        
-        <title>Task | Register</title>
 </head>
-{% include 'pre-base.html'%}
+
 <body>
     
     {% for message in messages %}
@@ -27,24 +26,33 @@
     </div>
     {%endfor %}
    
-    <br> <br> <br>
-<div class="container bg-white shadow-md p-lg-5 form-layout text-black ">
+<div class="container bg-white shadow-md p-lg-5 form-layout text-black "style='margin-top:20px'>
     
-    <h3>Register here!</h3>
-    <hr>
-    
-    <br>
-    <form action="" method="post" autocomplete="off">
-    {% csrf_token%}
+        <h3>Delete Account!</h3>
 
-        {{form.as_p }}
+        <hr>
+        <br>
 
-        <input class="btn btn-outline-primary me-2" type="submit" name="" id="">
-        <p>Already have an Account? <br>  <a class="btn btn-outline-primary me-2" href="{% url 'my-signin' %}">LogIn </a></p>
-       
-    </form>
+        <form action="" method="post" autocomplete="off">
+
+            {% csrf_token%}
+
+            <p>Are You Sure That You Want To Delete Your Account</p>
+
+            <br>
+
+            <a class="btn btn-outline-primary me-2" type="button" href="{% url 'my-dashboard'%}">Go Back</a>
+            
+            <button class="btn btn-outline-danger me-2" type="Submit">Delete</button>
+        
+        </form>
+
 </div>
-    <script src="" > </script>
+
+       
+
+    <script src=""></script>
+
 </body>
 </html>
 
