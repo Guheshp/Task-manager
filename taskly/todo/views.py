@@ -141,7 +141,7 @@ def ViewTask(request):
     context = {'task':task}
     
 
-    return render(request, 'profile/view-task.html',context)
+    return render(request, 'profile/view-task.html',context=context)
 
 # - UpdateTask. -
 @login_required(login_url='my-signin')
@@ -163,7 +163,7 @@ def UpdateTask(request, pk):
         
     context= {'form': form }
         
-    return render(request, 'profile/update-task.html',context)
+    return render(request, 'profile/update-task.html',context=context)
 
 # - DeleteTask. -
 @login_required(login_url='my-signin')
